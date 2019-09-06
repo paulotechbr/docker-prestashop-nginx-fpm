@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  php73:
+    image: prestashop/prestashop:1.7-7.2-fpm 
+    restart: always
+    networks:
+      - intranet
+    volumes:
+      - $PWD/html:/var/www/html
+  nginx:
+    image: nginx 
+    restart: always
+    networks:
+      - intranet
+      - web
+    volumes:
+      - $PWD/default.conf:/etc/nginx/conf.d/default.conf
+      - $PWD/html:/var/www/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=loja-paulotech"
+      - "traefik.frontend.rule=Host:loja.paulotech.com.br"
+      - "traefik.port=80"
+      - "traefik.docker.network=web"
+
+  mariadb:
+    image: mariadb
+    restart: always
+    networks:
+      - intranet
+    environment:
+      MYSQL_ROOT_PASSWORD: "prestashop"
+      MYSQL_DATABASE: "prestashop"
+    volumes:
+      - $PWD/datadir:/var/lib/mysql
+
+networks:
+  intranet:
+  web:
+    external: true
+
