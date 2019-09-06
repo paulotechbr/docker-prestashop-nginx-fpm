@@ -20,7 +20,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=loja-paulotech"
-      - "traefik.frontend.rule=Host:loja.paulotech.com.br"
+      - "traefik.frontend.rule=Host:loja.site.com.br"
       - "traefik.port=80"
       - "traefik.docker.network=web"
 
